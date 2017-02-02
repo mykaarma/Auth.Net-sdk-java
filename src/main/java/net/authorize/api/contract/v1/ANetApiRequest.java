@@ -14,6 +14,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
+import net.authorize.Environment;
+
 
 /**
  * <p>Java class for ANetApiRequest complex type.
@@ -101,8 +103,17 @@ public class ANetApiRequest implements java.io.Serializable {
     protected MerchantAuthenticationType merchantAuthentication;
     protected String clientId;
     protected String refId;
+    protected Environment environment;
 
-    /**
+    public Environment getEnvironment() {
+		return environment;
+	}
+
+	public void setEnvironment(Environment environment) {
+		this.environment = environment;
+	}
+
+	/**
      * Gets the value of the merchantAuthentication property.
      * 
      * @return

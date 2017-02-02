@@ -1,11 +1,9 @@
 package net.authorize.api.controller.base;
 
-import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import net.authorize.Environment;
 import net.authorize.api.contract.v1.ANetApiRequest;
@@ -30,8 +28,8 @@ public abstract class ApiOperationBase<Q extends ANetApiRequest, S extends ANetA
 
 	protected static Log logger = LogFactory.getLog(ApiOperationBase.class);
 
-	private static Environment environment = null;
-	private static MerchantAuthenticationType merchantAuthentication = null;
+	private  Environment environment = null;
+	private  MerchantAuthenticationType merchantAuthentication = null;
 	
 	private Q apiRequest = null;
 	private S apiResponse = null;
@@ -61,6 +59,8 @@ public abstract class ApiOperationBase<Q extends ANetApiRequest, S extends ANetA
 		this.responseClass = this.getResponseType();
 		this.setApiRequest(apiRequest);
 		this.setClientId();
+		this.setMerchantAuthentication(apiRequest.getMerchantAuthentication());
+		this.setEnvironment(apiRequest.getEnvironment());
 		
 		logger.debug(String.format("Creating instance for request:'%s' and response:'%s'", requestClass, responseClass));
 		logger.debug(String.format("Request:'%s'", apiRequest));
@@ -95,25 +95,25 @@ public abstract class ApiOperationBase<Q extends ANetApiRequest, S extends ANetA
 		this.errorResponse = errorResponse;
 	}
 
-	public static Environment getEnvironment() {
+	public Environment getEnvironment() {
 		return environment;
 	}
 
-	public static void setEnvironment(Environment environment) {
-		ApiOperationBase.environment = environment;
+	public void setEnvironment(Environment environment) {
+		this.environment = environment;
 	}
 
-	public static MerchantAuthenticationType getMerchantAuthentication() {
+	public MerchantAuthenticationType getMerchantAuthentication() {
 		return merchantAuthentication;
 	}
 
-	public static void setMerchantAuthentication(
+	public void setMerchantAuthentication(
 			MerchantAuthenticationType merchantAuthentication) {
-		ApiOperationBase.merchantAuthentication = merchantAuthentication;
+		this.merchantAuthentication = merchantAuthentication;
 	}
 
 	public S executeWithApiResponse() {
-		return this.executeWithApiResponse(ApiOperationBase.getEnvironment());
+		return this.executeWithApiResponse(this.getEnvironment());
 	}
 
 	public S executeWithApiResponse(Environment environment) {
@@ -124,13 +124,13 @@ public abstract class ApiOperationBase<Q extends ANetApiRequest, S extends ANetA
 	final String nullEnvironmentErrorMessage = "Environment not set. Set environment using setter or use overloaded method to pass appropriate environment";
 
 	public void execute() {
-		if ( null == ApiOperationBase.getEnvironment())
+		if ( null == this.getEnvironment())
 		{
 			throw new InvalidParameterException(nullEnvironmentErrorMessage);
 		} 
 		else
 		{
-			this.execute( ApiOperationBase.getEnvironment());
+			this.execute( this.getEnvironment());
 		}
 	}
 	
@@ -241,9 +241,9 @@ public abstract class ApiOperationBase<Q extends ANetApiRequest, S extends ANetA
 		ANetApiRequest request = this.getApiRequest();
 		if ( null == request.getMerchantAuthentication())
 		{
-			if ( null != ApiOperationBase.getMerchantAuthentication())
+			if ( null != this.getMerchantAuthentication())
 			{
-				request.setMerchantAuthentication(ApiOperationBase.getMerchantAuthentication());
+				request.setMerchantAuthentication(this.getMerchantAuthentication());
 			}
 			else
 			{
