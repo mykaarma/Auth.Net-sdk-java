@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import net.authorize.Environment;
@@ -103,6 +104,7 @@ public class ANetApiRequest implements java.io.Serializable {
     protected MerchantAuthenticationType merchantAuthentication;
     protected String clientId;
     protected String refId;
+    @XmlTransient()
     protected Environment environment;
 
     public Environment getEnvironment() {
