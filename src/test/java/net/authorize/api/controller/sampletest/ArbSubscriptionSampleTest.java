@@ -30,7 +30,6 @@ import net.authorize.api.controller.ARBCreateSubscriptionController;
 import net.authorize.api.controller.ARBGetSubscriptionController;
 import net.authorize.api.controller.ARBGetSubscriptionListController;
 import net.authorize.api.controller.ARBGetSubscriptionStatusController;
-import net.authorize.api.controller.base.ApiOperationBase;
 import net.authorize.api.controller.test.ApiCoreTestBase;
 import net.authorize.util.LogHelper;
 
@@ -59,12 +58,10 @@ public class ArbSubscriptionSampleTest extends ApiCoreTestBase {
 	@Test
 	public void ARBGetSubscriptionSample() {
 
-		//Common code to set for all requests
-		ApiOperationBase.setEnvironment(environment);
-		ApiOperationBase.setMerchantAuthentication(merchantAuthenticationType);
-		
 		//create
 		ARBCreateSubscriptionRequest createRequest = new ARBCreateSubscriptionRequest();
+		createRequest.setMerchantAuthentication(merchantAuthenticationType);
+		createRequest.setEnvironment(environment);
 		createRequest.setRefId(refId);
 		createRequest.setSubscription(arbSubscriptionOne);
 		ARBCreateSubscriptionController createController = new ARBCreateSubscriptionController(createRequest);		
@@ -112,14 +109,13 @@ public class ArbSubscriptionSampleTest extends ApiCoreTestBase {
 	@Test
 	public void subscriptionSamples() {
 
-		//Common code to set for all requests
-		ApiOperationBase.setEnvironment(environment);
-		ApiOperationBase.setMerchantAuthentication(merchantAuthenticationType);
-		
+	
 		//create
 		ARBCreateSubscriptionRequest createRequest = new ARBCreateSubscriptionRequest();
 		createRequest.setRefId(refId);
 		createRequest.setSubscription(arbSubscriptionOne);
+		createRequest.setMerchantAuthentication(merchantAuthenticationType);
+		createRequest.setEnvironment(environment);
 		ARBCreateSubscriptionController createController = new ARBCreateSubscriptionController(createRequest);		
 		//separate execute and getResponse calls
 		createController.execute();
